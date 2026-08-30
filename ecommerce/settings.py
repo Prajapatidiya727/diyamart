@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-24jmj2dnd8w404$&jphtx8jr@*w4ro5meh3jy7s2@&3ic)nlp$
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['diyamart-production.up.railway.app', 'localhost', '127.0.0.1']
 
 
 # =========================================================
