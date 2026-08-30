@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Checkout | DiyaMart
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.checkout-container{
+    max-width:1200px;
+    margin:40px auto;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:30px;
+}
+
+.checkout-card{
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.checkout-card h2{
+    margin-bottom:25px;
+    color:#222;
+    font-weight:700;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.form-control{
+    width:100%;
+    padding:13px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+    transition:.3s;
+}
+
+.form-control:focus{
+    border-color:#0d6efd;
+}
+
+.payment-box{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.payment-option{
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.payment-option:hover{
+    border-color:#0d6efd;
+    background:#f8fbff;
+}
+
+.summary-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.summary-total{
+    display:flex;
+    justify-content:space-between;
+    font-size:22px;
+    font-weight:bold;
+    border-top:1px solid #ddd;
+    padding-top:15px;
+    margin-top:15px;
+}
+
+.place-btn{
+    width:100%;
+    margin-top:25px;
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.place-btn:hover{
+    background:#084298;
+}
+
+@media(max-width:900px){
+
+.checkout-container{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+
+
+<div class="checkout-container">
+
+<form method="POST" class="checkout-card">
+
+{% csrf_token %}
+
+<h2>🚚 Shipping Details</h2>
+
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" name="full_name" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="text" name="phone" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<textarea name="address" class="form-control" rows="4" required></textarea>
+</div>
+
+<div class="form-group">
+<label>City</label>
+<input type="text" name="city" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>Pincode</label>
+<input type="text" name="pincode" class="form-control" required>
+</div>
+
+<h2>💳 Payment Method</h2>
+
+<div class="payment-box">
+
+<label class="payment-option">
+<input type="radio" name="payment_method" value="Cash On Delivery" checked>
+ Cash On Delivery
+</label>
+
+<label class="payment-option">
+<input type="radio" name="payment_method" value="UPI">
+ UPI
+</label>
+
+<label class="payment-option">
+<input type="radio" name="payment_method" value="Credit Card">
+ Credit / Debit Card
+</label>
+
+</div>
+
+<button class="place-btn">
+🛍 Place Order
+</button>
+
+</form>
+
+
+<div class="checkout-card">
+
+<h2>🛒 Order Summary</h2>
+
+{% for item in cart_items %}
+
+<div class="summary-item">
+<span>{{ item.product.name }} × {{ item.quantity }}</span>
+<span>₹{{ item.subtotal }}</span>
+</div>
+
+{% endfor %}
+
+<hr>
+
+<div class="summary-item">
+<span>Subtotal</span>
+<span>₹{{ total }}</span>
+</div>
+
+<div class="summary-item">
+<span>Delivery</span>
+<span style="color:green;">FREE</span>
+</div>
+
+<div class="summary-item">
+<span>Discount</span>
+<span>₹0</span>
+</div>
+
+<div class="summary-total">
+<span>Total</span>
+<span>₹{{ total }}</span>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

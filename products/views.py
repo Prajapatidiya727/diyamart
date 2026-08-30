@@ -1,0 +1,257 @@
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+
+from .models import Category, Product
+from wishlist.models import Wishlist
+
+
+# ============================================================
+# HOME
+# ============================================================
+
+def home(request):
+
+    query = request.GET.get('q', '').strip()
+
+    products = Product.objects.all().order_by('-id')
+
+    # Search
+    if query:
+        products = products.filter(
+            name__icontains=query
+        )
+
+    categories = Category.objects.all()
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'query': query,
+    }
+
+    return render(
+        request,
+        'home.html',
+        context
+    )
+
+
+# ============================================================
+# PRODUCT LIST
+# ============================================================
+
+def product_list(request):
+
+    products = Product.objects.all().order_by('-id')
+
+    query = request.GET.get('q', '').strip()
+    category_id = request.GET.get('category')
+    sort = request.GET.get('sort')
+
+    # --------------------------------------------------------
+    # SEARCH
+    # --------------------------------------------------------
+
+    if query:
+        products = products.filter(
+            name__icontains=query
+        )
+
+    # --------------------------------------------------------
+    # CATEGORY FILTER
+    # --------------------------------------------------------
+
+    if category_id:
+        products = products.filter(
+            category_id=category_id
+        )
+
+    # --------------------------------------------------------
+    # SORTING
+    # --------------------------------------------------------
+
+    if sort == 'price_low':
+
+        products = products.order_by('price')
+
+    elif sort == 'price_high':
+
+        products = products.order_by('-price')
+
+    elif sort == 'name':
+
+        products = products.order_by('name')
+
+    else:
+
+        products = products.order_by('-id')
+
+    # --------------------------------------------------------
+    # PAGINATION
+    # --------------------------------------------------------
+
+    paginator = Paginator(products, 12)
+
+    page_number = request.GET.get('page')
+
+    products = paginator.get_page(page_number)
+
+    # --------------------------------------------------------
+    # CATEGORIES
+    # --------------------------------------------------------
+
+    categories = Category.objects.all()
+
+    # --------------------------------------------------------
+    # CONTEXT
+    # --------------------------------------------------------
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'query': query,
+        'selected_category': category_id,
+        'sort': sort,
+    }
+
+    return render(
+        request,
+        'products/products.html',
+        context
+    )
+
+
+# ============================================================
+# PRODUCT DETAIL
+# ============================================================
+
+def product_detail(request, id):
+
+    product = get_object_or_404(
+        Product,
+        id=id
+    )
+
+    return render(
+        request,
+        'product_detail.html',
+        {
+            'product': product
+        }
+    )
+
+
+# ============================================================
+# CATEGORY LIST
+# ============================================================
+
+def category_list(request):
+
+    categories = Category.objects.all()
+
+    return render(
+        request,
+        'products/categories.html',
+        {
+            'categories': categories
+        }
+    )
+
+
+# ============================================================
+# WISHLIST
+# ============================================================
+
+@login_required
+def wishlist(request):
+
+    wishlist_items = Wishlist.objects.filter(
+        user=request.user
+    ).select_related(
+        'product'
+    )
+
+    return render(
+        request,
+        'wishlist.html',
+        {
+            'wishlist_items': wishlist_items
+        }
+    )
+
+
+# ============================================================
+# ADD TO WISHLIST
+# ============================================================
+
+@login_required
+def add_to_wishlist(request, product_id):
+
+    product = get_object_or_404(
+        Product,
+        id=product_id
+    )
+
+    Wishlist.objects.get_or_create(
+        user=request.user,
+        product=product
+    )
+
+    messages.success(
+        request,
+        f"{product.name} added to your wishlist ❤️"
+    )
+
+    return redirect('wishlist')
+
+
+# ============================================================
+# REMOVE FROM WISHLIST
+# ============================================================
+
+@login_required
+def remove_from_wishlist(request, product_id):
+
+    Wishlist.objects.filter(
+        user=request.user,
+        product_id=product_id
+    ).delete()
+
+    messages.success(
+        request,
+        "Product removed from wishlist."
+    )
+
+    return redirect('wishlist')
+
+
+# ============================================================
+# NEWSLETTER SUBSCRIBE
+# ============================================================
+
+def subscribe_newsletter(request):
+
+    if request.method == 'POST':
+
+        email = request.POST.get(
+            'email',
+            ''
+        ).strip()
+
+        if email:
+
+            messages.success(
+                request,
+                "Thank you for subscribing to DiyaMart! 🎉"
+            )
+
+        else:
+
+            messages.error(
+                request,
+                "Please enter your email address."
+            )
+
+    return redirect('home')

@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load tz %}
+
+{% block title %}
+My Orders | DiyaMart
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    text-align:center;
+    margin:30px 0;
+    font-size:2rem;
+    font-weight:700;
+    color:#1f2937;
+}
+
+.order-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.order-card:hover{
+    transform:translateY(-4px);
+}
+
+.order-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.order-number{
+    margin:0;
+    font-weight:700;
+    color:#222;
+}
+
+.status{
+    padding:7px 16px;
+    border-radius:30px;
+    color:white;
+    font-size:.9rem;
+    font-weight:600;
+}
+
+.status-pending{
+    background:#ffc107;
+    color:#222;
+}
+
+.status-processing{
+    background:#0d6efd;
+}
+
+.status-shipped{
+    background:#17a2b8;
+}
+
+.status-delivered{
+    background:#198754;
+}
+
+.status-cancelled{
+    background:#dc3545;
+}
+
+.order-info{
+    margin-top:20px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    margin:10px 0;
+    font-size:16px;
+}
+
+.total{
+    color:#0d6efd;
+    font-size:20px;
+}
+
+.empty-box{
+    text-align:center;
+    padding:70px 30px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.continue-btn{
+    background:#0d6efd;
+    color:white;
+    padding:12px 28px;
+    border-radius:30px;
+    text-decoration:none;
+    display:inline-block;
+    margin-top:20px;
+    transition:.3s;
+}
+
+.continue-btn:hover{
+    background:#084298;
+    color:white;
+}
+
+.product-box{
+    background:#f8f9fa;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.product-title{
+    font-weight:600;
+    font-size:17px;
+}
+
+hr{
+    margin:15px 0;
+}
+
+@media(max-width:768px){
+
+    .order-header,
+    .info-row{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .status{
+        margin-top:10px;
+    }
+
+}
+
+</style>
+
+<h1 class="page-title">
+    📦 My Orders
+</h1>
+
+{% if orders %}
+
+    {% for order in orders %}
+
+    <div class="order-card">
+
+        <div class="order-header">
+
+            <h3 class="order-number">
+                Order #{{ order.id }}
+            </h3>
+
+            {% if order.status == "Pending" %}
+
+                <span class="status status-pending">
+                    {{ order.status }}
+                </span>
+
+            {% elif order.status == "Processing" %}
+
+                <span class="status status-processing">
+                    {{ order.status }}
+                </span>
+
+            {% elif order.status == "Shipped" %}
+
+                <span class="status status-shipped">
+                    {{ order.status }}
+                </span>
+
+            {% elif order.status == "Delivered" %}
+
+                <span class="status status-delivered">
+                    {{ order.status }}
+                </span>
+
+            {% else %}
+
+                <span class="status status-cancelled">
+                    {{ order.status }}
+                </span>
+
+            {% endif %}
+
+        </div>
+
+        <hr>
+
+        <div class="order-info">
+
+            {% for item in order.items.all %}
+
+            <div class="product-box">
+
+                <div class="product-title">
+                    🛍 {{ item.product.name }}
+                </div>
+
+                <div class="info-row">
+                    <span>Quantity</span>
+                    <strong>{{ item.quantity }}</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Price</span>
+                    <strong>₹{{ item.price }}</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Subtotal</span>
+                    <strong>₹{{ item.subtotal }}</strong>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            <div class="info-row">
+                <span>💳 Payment Method</span>
+                <strong>{{ order.payment_method }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>💵 Order Total</span>
+                <strong class="total">
+                    ₹{{ order.total_price }}
+                </strong>
+            </div>
+
+            <div class="info-row">
+                <span>📅 Ordered On</span>
+                <strong>
+                    {{ order.ordered_at|localtime|date:"d M Y, h:i A" }}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="empty-box">
+
+    <h2>
+        No Orders Yet 🛒
+    </h2>
+
+    <p class="text-muted">
+        Looks like you haven't placed any orders yet.
+    </p>
+
+    <a
+        href="{% url 'home' %}"
+        class="continue-btn"
+    >
+        🛍 Continue Shopping
+    </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

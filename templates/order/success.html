@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Order Successful | DiyaMart
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.success-box{
+    max-width:700px;
+    margin:60px auto;
+    background:white;
+    border-radius:20px;
+    padding:50px;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.tick{
+    font-size:70px;
+    color:#28a745;
+}
+
+.total{
+    font-size:30px;
+    font-weight:bold;
+    color:#0d6efd;
+    margin:25px 0;
+}
+
+.btn-shop,
+.btn-order{
+    padding:12px 28px;
+    border-radius:30px;
+    text-decoration:none;
+    margin:8px;
+    display:inline-block;
+}
+
+.btn-shop{
+    background:#0d6efd;
+    color:white;
+}
+
+.btn-order{
+    background:#198754;
+    color:white;
+}
+
+</style>
+
+<div class="success-box">
+
+    <div class="tick">✅</div>
+
+    <h2>Order Placed Successfully!</h2>
+
+    <p>
+        Thank you for shopping with
+        <strong>DiyaMart</strong>.
+    </p>
+
+    <div class="total">
+        ₹{{ total }}
+    </div>
+
+    <a href="{% url 'home' %}" class="btn-shop">
+        Continue Shopping
+    </a>
+
+    <a href="{% url 'my_orders' %}" class="btn-order">
+        View My Orders
+    </a>
+
+</div>
+
+{% endblock %}

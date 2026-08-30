@@ -1,0 +1,623 @@
+{% extends 'base.html' %}
+
+{% block title %}
+DiyaMart | Online Shopping
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+body {
+    background: #f8fafc;
+    font-family: 'Poppins', sans-serif;
+    color: #1f2937;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(139, 92, 246, 0.28),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 15% 80%,
+            rgba(108, 99, 255, 0.20),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #111827,
+            #312e81
+        );
+
+    color: white;
+}
+
+.hero-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+    padding: 70px 25px;
+}
+
+.hero-content {
+    max-width: 720px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.20);
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.05;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: #c4b5fd;
+}
+
+.hero p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #e5e7eb;
+    max-width: 650px;
+    margin-bottom: 32px;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 15px 28px;
+
+    background: white;
+    color: #4f46e5;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+    font-size: 16px;
+
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    color: #3730a3;
+}
+
+
+/* =========================================================
+   CATEGORY SECTION
+========================================================= */
+
+.section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 75px 25px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.section-header p {
+    color: #64748b;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   CATEGORY GRID
+========================================================= */
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 22px;
+}
+
+.category-card {
+    display: block;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 5px 18px rgba(15,23,42,0.06);
+
+    transition: all 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 35px rgba(15,23,42,0.13);
+}
+
+.category-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+}
+
+.category-name {
+    padding: 15px 10px;
+    text-align: center;
+
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   EMPTY CATEGORY MESSAGE
+========================================================= */
+
+.empty-products {
+    text-align: center;
+    padding: 45px 20px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    border: 1px solid #e5e7eb;
+
+    color: #64748b;
+}
+
+.empty-products-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.empty-products h3 {
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+
+/* =========================================================
+   COOL STATS SECTION
+========================================================= */
+
+.stats-section {
+    background: linear-gradient(
+        135deg,
+        #111827,
+        #1e1b4b
+    );
+
+    padding: 65px 20px;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-section::before {
+    content: "";
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
+
+    background: rgba(139, 92, 246, 0.15);
+
+    top: -160px;
+    right: -100px;
+}
+
+.stats-section::after {
+    content: "";
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    border-radius: 50%;
+
+    background: rgba(99, 102, 241, 0.12);
+
+    bottom: -150px;
+    left: -100px;
+}
+
+.stats-grid {
+    max-width: 1200px;
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 22px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 22px;
+
+    padding: 30px 18px;
+
+    text-align: center;
+
+    backdrop-filter: blur(12px);
+
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+
+    background: rgba(255, 255, 255, 0.13);
+
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.22);
+}
+
+.stat-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 17px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 26px;
+}
+
+.stat-number {
+    font-size: 38px;
+
+    font-weight: 800;
+
+    color: white;
+
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #cbd5e1;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .hero {
+        min-height: 470px;
+    }
+
+    .hero-container {
+        padding: 55px 20px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .section {
+        padding: 55px 18px;
+    }
+
+    .section-header h2 {
+        font-size: 28px;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .category-image {
+        height: 155px;
+    }
+
+    .stats-section {
+        padding: 45px 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 22px 10px;
+        border-radius: 18px;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+    }
+
+    .stat-number {
+        font-size: 28px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+
+<section class="hero">
+
+    <div class="hero-container">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                🛍️ Welcome to DiyaMart
+            </div>
+
+            <h1>
+                Shop Smart.<br>
+                Shop <span>DiyaMart.</span>
+            </h1>
+
+            <p>
+                Discover thousands of products across electronics,
+                fashion, beauty, home, lifestyle and more —
+                all in one place.
+            </p>
+
+            <a
+                href="{% url 'products' %}"
+                class="hero-btn"
+            >
+                🛒 Shop Now
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section" id="categories">
+
+    <div class="section-header">
+
+        <h2>
+            Shop by Category
+        </h2>
+
+        <p>
+            Explore our growing collection across electronics,
+            fashion, home, beauty, lifestyle and more.
+        </p>
+
+    </div>
+
+
+    {% if categories %}
+
+        <div class="category-grid">
+
+            {% for category in categories %}
+
+                <a
+                    href="{% url 'products' %}?category={{ category.id }}"
+                    class="category-card"
+                >
+
+                    {% if category.image %}
+
+                        <img
+                            src="{{ category.image.url }}"
+                            alt="{{ category.name }}"
+                            class="category-image"
+                            loading="lazy"
+                        >
+
+                    {% else %}
+
+                        <div
+                            class="category-image"
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:45px;
+                                background:#f1f5f9;
+                            "
+                        >
+                            🛍️
+                        </div>
+
+                    {% endif %}
+
+                    <div class="category-name">
+                        {{ category.name }}
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-products">
+
+            <div class="empty-products-icon">
+                🛍️
+            </div>
+
+            <h3>
+                No categories available
+            </h3>
+
+            <p>
+                Categories will appear here once they are added.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+<section class="stats-section">
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+            <div class="stat-number">
+                5000+
+            </div>
+
+            <div class="stat-label">
+                Happy Customers
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🛍️
+            </div>
+
+            <div class="stat-number">
+                1000+
+            </div>
+
+            <div class="stat-label">
+                Products
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🏷️
+            </div>
+
+            <div class="stat-number">
+                100+
+            </div>
+
+            <div class="stat-label">
+                Categories
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⚡
+            </div>
+
+            <div class="stat-number">
+                24/7
+            </div>
+
+            <div class="stat-label">
+                Shopping
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

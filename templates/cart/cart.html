@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Shopping Cart | DiyaMart
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.cart-container{
+    max-width:1200px;
+    margin:40px auto;
+}
+
+.cart-title{
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+.cart-card{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.product-img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.product-name{
+    font-size:22px;
+    font-weight:700;
+}
+
+.price{
+    color:#ff5722;
+    font-size:20px;
+    font-weight:700;
+}
+
+.qty-btn{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:50%;
+    background:#0d6efd;
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+    text-decoration:none;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.qty-btn:hover{
+    background:#084fc7;
+    color:white;
+}
+
+.remove-btn{
+    border:none;
+    background:#dc3545;
+    color:white;
+    padding:8px 20px;
+    border-radius:30px;
+    text-decoration:none;
+}
+
+.remove-btn:hover{
+    color:white;
+    background:#bb2d3b;
+}
+
+.summary-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    position:sticky;
+    top:100px;
+}
+
+.summary-card h3{
+    margin-bottom:20px;
+    font-weight:700;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.total{
+    font-size:26px;
+    font-weight:bold;
+    color:#0d6efd;
+}
+
+.checkout-btn{
+    width:100%;
+    margin-top:20px;
+    border-radius:50px;
+    padding:14px;
+    font-size:18px;
+}
+
+.empty-cart{
+    text-align:center;
+    padding:80px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+</style>
+
+<div class="container cart-container">
+
+    <h1 class="cart-title">
+        🛒 Your Shopping Cart
+    </h1>
+
+    {% if items %}
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            {% for item in items %}
+
+            <div class="cart-card">
+
+                <div class="row align-items-center">
+
+                    <div class="col-md-2 text-center">
+
+                        {% if item.product.image %}
+
+                        <img
+                            src="{{ item.product.image.url }}"
+                            class="product-img"
+                            alt="{{ item.product.name }}">
+
+                        {% else %}
+
+                        <img
+                            src="https://via.placeholder.com/120"
+                            class="product-img"
+                            alt="No Image">
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="product-name">
+
+                            {{ item.product.name }}
+
+                        </div>
+
+                        <div class="price">
+
+                            ₹{{ item.product.price }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <div class="d-flex align-items-center justify-content-center">
+
+                            <a href="{% url 'decrease_quantity' item.product.id %}"
+                               class="qty-btn">
+
+                                −
+
+                            </a>
+
+                            <span class="mx-3 fw-bold fs-5">
+
+                                {{ item.quantity }}
+
+                            </span>
+
+                            <a href="{% url 'increase_quantity' item.product.id %}"
+                               class="qty-btn">
+
+                                +
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2 text-center">
+
+                        <h5>
+
+                            ₹{{ item.subtotal }}
+
+                        </h5>
+
+                    </div>
+
+                    <div class="col-md-1 text-end">
+
+                        <a href="{% url 'remove_from_cart' item.product.id %}"
+                           class="remove-btn">
+
+                            🗑
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="summary-card">
+
+                <h3>
+
+                    Order Summary
+
+                </h3>
+
+                <div class="summary-row">
+
+                    <span>
+
+                        Subtotal
+
+                    </span>
+
+                    <strong>
+
+                        ₹{{ total }}
+
+                    </strong>
+
+                </div>
+
+                <div class="summary-row">
+
+                    <span>
+
+                        🚚 Delivery
+
+                    </span>
+
+                    <strong class="text-success">
+
+                        FREE
+
+                    </strong>
+
+                </div>
+
+                <div class="summary-row">
+
+                    <span>
+
+                        🎁 Discount
+
+                    </span>
+
+                    <strong>
+
+                        ₹0
+
+                    </strong>
+
+                </div>
+
+                <hr>
+
+                <div class="summary-row total">
+
+                    <span>
+
+                        Total
+
+                    </span>
+
+                    <span>
+
+                        ₹{{ total }}
+
+                    </span>
+
+                </div>
+
+                <a href="{% url 'checkout' %}"
+                   class="btn btn-primary checkout-btn">
+
+                    Proceed To Checkout 🛒
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-cart">
+
+        <h2>
+
+            Your cart is empty 🛒
+
+        </h2>
+
+        <p class="text-muted">
+
+            Looks like you haven't added anything yet.
+
+        </p>
+
+        <a href="{% url 'home' %}"
+           class="btn btn-primary btn-lg rounded-pill">
+
+            Continue Shopping
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

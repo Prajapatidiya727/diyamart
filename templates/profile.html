@@ -1,0 +1,712 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+My Profile | DiyaMart
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<style>
+
+
+body{
+
+    background:#f8fafc;
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+
+
+.profile-section{
+
+    padding:60px 0;
+
+}
+
+
+
+
+.profile-card{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:40px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,0.08);
+
+}
+
+
+
+
+/* Header */
+
+
+.profile-header{
+
+    text-align:center;
+
+}
+
+
+
+
+.profile-icon{
+
+    font-size:120px;
+
+    color:#6C63FF;
+
+}
+
+
+
+
+.username{
+
+    font-size:35px;
+
+    font-weight:700;
+
+}
+
+
+
+
+.welcome{
+
+    color:#6b7280;
+
+}
+
+
+
+
+
+/* Info Cards */
+
+
+.info-card{
+
+    background:#f8fafc;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    height:100%;
+
+}
+
+
+
+
+.info-title{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    margin-bottom:25px;
+
+}
+
+
+
+
+.info-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:12px 0;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+
+
+
+
+/* Stats */
+
+
+.stat-box{
+
+    background:linear-gradient(
+        135deg,
+        #6C63FF,
+        #2563eb
+    );
+
+
+    color:white;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+}
+
+
+
+
+.stat-number{
+
+    font-size:40px;
+
+    font-weight:700;
+
+}
+
+
+
+
+/* Buttons */
+
+
+.action-btn{
+
+    border-radius:30px;
+
+    padding:12px 25px;
+
+    margin:5px;
+
+}
+
+
+
+
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+
+@media(max-width:768px){
+
+
+
+.profile-section{
+
+    padding:30px 10px;
+
+}
+
+
+
+
+.profile-card{
+
+    padding:20px;
+
+    border-radius:20px;
+
+}
+
+
+
+
+.profile-icon{
+
+    font-size:80px;
+
+}
+
+
+
+
+.username{
+
+    font-size:28px;
+
+}
+
+
+
+
+.welcome{
+
+    font-size:14px;
+
+}
+
+
+
+
+.info-card{
+
+    padding:20px;
+
+}
+
+
+
+
+.info-title{
+
+    font-size:20px;
+
+}
+
+
+
+
+.info-row{
+
+    flex-direction:column;
+
+    gap:5px;
+
+    font-size:15px;
+
+}
+
+
+
+
+.stat-number{
+
+    font-size:32px;
+
+}
+
+
+
+
+.action-btn{
+
+    width:100%;
+
+    margin:8px 0;
+
+}
+
+
+
+
+}
+
+
+
+
+@media(max-width:576px){
+
+
+
+.profile-card{
+
+    padding:15px;
+
+}
+
+
+
+
+.username{
+
+    font-size:24px;
+
+}
+
+
+
+.info-title{
+
+    font-size:18px;
+
+}
+
+
+
+
+.stat-box{
+
+    padding:20px;
+
+}
+
+
+
+}
+
+
+
+
+</style>
+
+
+
+
+
+<div class="container profile-section">
+
+
+
+<div class="profile-card">
+
+
+
+<div class="profile-header">
+
+
+
+<i class="bi bi-person-circle profile-icon"></i>
+
+
+
+<h1 class="username mt-3">
+
+
+{{ user.username }}
+
+
+</h1>
+
+
+
+<p class="welcome">
+
+
+Welcome to your DiyaMart Account 🛍️
+
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<hr class="my-5">
+
+
+
+
+
+
+<div class="row g-4">
+
+
+
+<!-- Account -->
+
+
+
+<div class="col-lg-6">
+
+
+
+<div class="info-card">
+
+
+
+<h3 class="info-title">
+
+
+👤 Account Information
+
+
+</h3>
+
+
+
+
+<div class="info-row">
+
+
+<strong>
+Username
+</strong>
+
+
+<span>
+{{ user.username }}
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="info-row">
+
+
+<strong>
+First Name
+</strong>
+
+
+<span>
+{{ user.first_name|default:"Not Added" }}
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="info-row">
+
+
+<strong>
+Last Name
+</strong>
+
+
+<span>
+{{ user.last_name|default:"Not Added" }}
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="info-row">
+
+
+<strong>
+Email
+</strong>
+
+
+<span>
+{{ user.email|default:"Not Added" }}
+</span>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- Stats -->
+
+
+
+<div class="col-lg-6">
+
+
+
+<div class="info-card">
+
+
+
+<h3 class="info-title">
+
+
+📊 Shopping Summary
+
+
+</h3>
+
+
+
+
+<div class="stat-box">
+
+
+
+<div class="stat-number">
+
+
+{{ total_orders }}
+
+
+</div>
+
+
+
+<p class="mb-0">
+
+
+Total Orders
+
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<br>
+
+
+
+
+<p>
+
+
+<strong>Status:</strong>
+
+
+<span class="badge bg-success">
+
+
+Active
+
+
+</span>
+
+
+</p>
+
+
+
+
+
+<p>
+
+
+<strong>Member Since:</strong>
+
+
+{{ user.date_joined|date:"d M Y" }}
+
+
+</p>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="text-center mt-5">
+
+
+
+
+<a href="{% url 'edit_profile' %}"
+class="btn btn-info action-btn">
+
+
+✏️ Edit Profile
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'cart' %}"
+class="btn btn-primary action-btn">
+
+
+🛒 My Cart
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'my_orders' %}"
+class="btn btn-success action-btn">
+
+
+📦 My Orders
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'home' %}"
+class="btn btn-warning action-btn">
+
+
+🛍 Continue Shopping
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'logout' %}"
+class="btn btn-danger action-btn">
+
+
+🚪 Logout
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+{% endblock %}

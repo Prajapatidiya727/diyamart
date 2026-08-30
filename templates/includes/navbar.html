@@ -1,0 +1,398 @@
+ 
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+
+    <div class="container">
+
+        <!-- ================================================= -->
+        <!-- BRAND / LOGO -->
+        <!-- ================================================= -->
+
+        <a
+            class="navbar-brand d-flex align-items-center"
+            href="{% url 'home' %}"
+        >
+
+            <img
+                src="{% static 'diyamart_logo.png' %}"
+                alt="DiyaMart Logo"
+                class="diyamart-logo"
+            >
+
+        </a>
+
+
+        <!-- ================================================= -->
+        <!-- MOBILE MENU BUTTON -->
+        <!-- ================================================= -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <!-- ================================================= -->
+        <!-- NAVBAR CONTENT -->
+        <!-- ================================================= -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+
+            <!-- ================================================= -->
+            <!-- SEARCH -->
+            <!-- ================================================= -->
+
+            <form
+                class="d-flex mx-auto search-box"
+                method="GET"
+                action="{% url 'home' %}"
+            >
+
+                <input
+                    class="form-control rounded-pill"
+                    type="search"
+                    placeholder="Search products..."
+                    name="q"
+                    value="{{ query }}"
+                >
+
+                <button
+                    class="btn btn-warning rounded-pill search-btn"
+                    type="submit"
+                >
+
+                    <i class="bi bi-search"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- ================================================= -->
+            <!-- NAVIGATION -->
+            <!-- ================================================= -->
+
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+
+
+                <!-- HOME -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link menu-link"
+                        href="{% url 'home' %}"
+                    >
+
+                        <i class="bi bi-house-door"></i>
+
+                        Home
+
+                    </a>
+
+                </li>
+
+
+                <!-- CART -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link menu-link"
+                        href="{% url 'cart' %}"
+                    >
+
+                        <i class="bi bi-cart3"></i>
+
+                        Cart
+
+                    </a>
+
+                </li>
+
+
+                {% if user.is_authenticated %}
+
+
+                <!-- ================================================= -->
+                <!-- ORDERS -->
+                <!-- ================================================= -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link menu-link"
+                        href="{% url 'my_orders' %}"
+                    >
+
+                        <i class="bi bi-box-seam"></i>
+
+                        Orders
+
+                    </a>
+
+                </li>
+
+
+                <!-- ================================================= -->
+                <!-- WISHLIST -->
+                <!-- ================================================= -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link menu-link"
+                        href="{% url 'wishlist' %}"
+                    >
+
+                        <i class="bi bi-heart"></i>
+
+                        Wishlist
+
+                    </a>
+
+                </li>
+
+
+                <!-- ================================================= -->
+                <!-- PROFILE -->
+                <!-- ================================================= -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link menu-link"
+                        href="{% url 'profile' %}"
+                    >
+
+                        <i class="bi bi-person-circle"></i>
+
+                        {{ user.username }}
+
+                    </a>
+
+                </li>
+
+
+                <!-- ================================================= -->
+                <!-- LOGOUT -->
+                <!-- ================================================= -->
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'logout' %}"
+                        class="btn btn-danger rounded-pill px-4"
+                    >
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+
+                {% else %}
+
+
+                <!-- ================================================= -->
+                <!-- LOGIN -->
+                <!-- ================================================= -->
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="btn btn-warning rounded-pill px-4"
+                    >
+
+                        Login
+
+                    </a>
+
+                </li>
+
+
+                <!-- ================================================= -->
+                <!-- REGISTER -->
+                <!-- ================================================= -->
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'register' %}"
+                        class="btn btn-success rounded-pill px-4"
+                    >
+
+                        Register
+
+                    </a>
+
+                </li>
+
+
+                {% endif %}
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<style>
+
+/* =========================================================
+   DIYAMART LOGO
+========================================================= */
+
+.diyamart-logo {
+
+    height: 48px;
+
+    width: 145px;
+
+    object-fit: contain;
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.search-box {
+
+    width: 45%;
+
+}
+
+
+.search-box input {
+
+    padding: 12px 20px;
+
+    border: 1px solid #ddd;
+
+}
+
+
+.search-btn {
+
+    margin-left: -45px;
+
+    width: 45px;
+
+    z-index: 2;
+
+}
+
+
+/* =========================================================
+   MENU LINKS
+========================================================= */
+
+.menu-link {
+
+    font-weight: 500;
+
+    transition: .3s;
+
+}
+
+
+.menu-link:hover {
+
+    color: #f59e0b !important;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================================
+   NAVBAR BRAND
+========================================================= */
+
+.navbar-brand {
+
+    letter-spacing: .5px;
+
+    padding-top: 0;
+
+    padding-bottom: 0;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:991px) {
+
+    .search-box {
+
+        width: 100%;
+
+        margin: 20px 0;
+
+    }
+
+
+    .navbar-nav {
+
+        align-items: flex-start !important;
+
+    }
+
+
+    .diyamart-logo {
+
+        height: 44px;
+
+        width: 135px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:576px) {
+
+    .diyamart-logo {
+
+        height: 40px;
+
+        width: 125px;
+
+    }
+
+}
+
+</style>
+ 
