@@ -45,4 +45,12 @@ urlpatterns = [
         views.checkout,
         name="checkout"
     ),
+
+    # Demo Payment / Place Order
+    path(
+        "demo-payment/",
+        views.demo_payment,
+        name="demo_payment"
+    ),
+
 ]

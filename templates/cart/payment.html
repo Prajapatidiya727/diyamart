@@ -8,116 +8,130 @@ Payment | DiyaMart
 
 <style>
 
-.payment-container{
-    max-width:900px;
-    margin:50px auto;
-    display:grid;
-    grid-template-columns:1.5fr 1fr;
-    gap:30px;
+.payment-container {
+    max-width: 900px;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
 }
 
-.payment-card{
-    background:#fff;
-    padding:35px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+.payment-card {
+    background: #fff;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
 }
 
-.payment-card h2{
-    margin-bottom:25px;
-    color:#222;
-    font-weight:700;
+.payment-card h2 {
+    margin-bottom: 25px;
+    color: #222;
+    font-weight: 700;
 }
 
-.payment-method{
-    background:#f8fbff;
-    border:1px solid #ddd;
-    padding:18px;
-    border-radius:12px;
-    margin-bottom:25px;
-    font-size:17px;
+.payment-method {
+    background: #f8fbff;
+    border: 1px solid #ddd;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    font-size: 17px;
 }
 
-.payment-method strong{
-    color:#0d6efd;
+.payment-method strong {
+    color: #0d6efd;
 }
 
-.payment-info{
-    background:#f8f9fa;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:25px;
+.payment-info {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
 }
 
-.payment-info p{
-    margin:8px 0;
+.payment-info p {
+    margin: 8px 0;
 }
 
-.demo-note{
-    color:#666;
-    font-size:14px;
-    margin-top:15px;
+.demo-note {
+    color: #666;
+    font-size: 14px;
+    margin-top: 15px;
 }
 
-.pay-btn{
-    width:100%;
-    background:#0d6efd;
-    color:white;
-    border:none;
-    padding:15px;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.3s;
+.pay-btn {
+    width: 100%;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
 }
 
-.pay-btn:hover{
-    background:#084298;
+.pay-btn:hover {
+    background: #084298;
 }
 
-.summary-item{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:15px;
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
 }
 
-.summary-total{
-    display:flex;
-    justify-content:space-between;
-    font-size:22px;
-    font-weight:bold;
-    border-top:1px solid #ddd;
-    padding-top:15px;
-    margin-top:15px;
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    font-weight: bold;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    margin-top: 15px;
 }
 
-@media(max-width:900px){
+@media(max-width: 900px) {
 
-.payment-container{
-    grid-template-columns:1fr;
-}
+    .payment-container {
+        grid-template-columns: 1fr;
+    }
 
 }
 
 </style>
 
+
 <div class="payment-container">
+
+    <!-- Payment Section -->
 
     <div class="payment-card">
 
         <h2>💳 Payment</h2>
 
+
         <div class="payment-method">
+
             Selected Payment Method:
-            <strong>{{ payment_method }}</strong>
+
+            <strong>
+                {{ payment_method }}
+            </strong>
+
         </div>
+
 
         {% if payment_method == "UPI" %}
 
         <div class="payment-info">
+
             <h4>UPI Payment</h4>
-            <p>Enter any demo UPI ID to continue.</p>
+
+            <p>
+                Enter any demo UPI ID to continue.
+            </p>
 
             <input
                 type="text"
@@ -125,7 +139,9 @@ Payment | DiyaMart
                 placeholder="example@upi"
                 required
             >
+
         </div>
+
 
         {% elif payment_method == "Credit Card" %}
 
@@ -166,62 +182,125 @@ Payment | DiyaMart
 
         </div>
 
+
         {% else %}
 
         <div class="payment-info">
+
             <h4>Cash On Delivery</h4>
-            <p>You can pay when your order is delivered.</p>
+
+            <p>
+                You can pay when your order is delivered.
+            </p>
+
         </div>
 
         {% endif %}
 
-        <form method="POST">
+
+        <!-- IMPORTANT: Submit to demo_payment -->
+
+        <form
+            method="POST"
+            action="{% url 'demo_payment' %}"
+        >
 
             {% csrf_token %}
 
-            <button type="submit" class="pay-btn">
+            <button
+                type="submit"
+                class="pay-btn"
+            >
+
                 {% if payment_method == "UPI" or payment_method == "Credit Card" %}
+
                     💳 Pay ₹{{ total }}
+
                 {% else %}
+
                     🛍️ Confirm Order
+
                 {% endif %}
+
             </button>
 
         </form>
 
+
         {% if payment_method == "UPI" or payment_method == "Credit Card" %}
+
         <p class="demo-note">
+
             This is a demo payment system for DiyaMart.
+
             No real payment will be processed.
+
         </p>
+
         {% endif %}
+
 
     </div>
 
+
+    <!-- Order Summary -->
 
     <div class="payment-card">
 
         <h2>🛒 Order Summary</h2>
 
-        <div class="summary-item">
-            <span>Subtotal</span>
-            <span>₹{{ total }}</span>
-        </div>
 
         <div class="summary-item">
-            <span>Delivery</span>
-            <span style="color:green;">FREE</span>
+
+            <span>
+                Subtotal
+            </span>
+
+            <span>
+                ₹{{ total }}
+            </span>
+
         </div>
 
+
         <div class="summary-item">
-            <span>Discount</span>
-            <span>₹0</span>
+
+            <span>
+                Delivery
+            </span>
+
+            <span style="color: green;">
+                FREE
+            </span>
+
         </div>
+
+
+        <div class="summary-item">
+
+            <span>
+                Discount
+            </span>
+
+            <span>
+                ₹0
+            </span>
+
+        </div>
+
 
         <div class="summary-total">
-            <span>Total</span>
-            <span>₹{{ total }}</span>
+
+            <span>
+                Total
+            </span>
+
+            <span>
+                ₹{{ total }}
+            </span>
+
         </div>
+
 
     </div>
 
