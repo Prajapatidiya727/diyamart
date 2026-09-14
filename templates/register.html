@@ -11,6 +11,12 @@
 
     <h2>Register</h2>
 
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endif %}
+
     <form method="post">
 
         {% csrf_token %}
@@ -20,6 +26,7 @@
             name="username"
             class="form-control mb-3"
             placeholder="Username"
+            required
         >
 
         <input
@@ -27,9 +34,10 @@
             name="password"
             class="form-control mb-3"
             placeholder="Password"
+            required
         >
 
-        <button class="btn btn-success">
+        <button type="submit" class="btn btn-success">
             Register
         </button>
 

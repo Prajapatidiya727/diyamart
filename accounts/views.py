@@ -12,6 +12,16 @@ def register(request):
         username = request.POST["username"]
         password = request.POST["password"]
 
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "register.html",
+                {
+                    "error": "Username already exists. Please choose another username."
+                }
+            )
+
         user = User.objects.create_user(
             username=username,
             password=password
